@@ -1,6 +1,8 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import HTMLFlipBook from 'react-pageflip';
 import styles from './styles.module.css';
+import { FaUser, FaCog, FaShareAlt } from 'react-icons/fa';
 import wingedHussar from '../../assets/images/Winged_Hussar.png';
 import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk.png';
 import Ottoman_Elite_Janissary from '../../assets/images/Ottoman_Elite_Janissary.png';
@@ -22,6 +24,7 @@ const Page = forwardRef(function Page({ children, onClick, className = '' }, ref
 });
 
 function Book({ shouldOpen = false }) {
+  const { t } = useTranslation();
   const bookRef = useRef(null);
   const preOpenShiftTimeoutRef = useRef(null);
   const unlockTimeoutRef = useRef(null);
@@ -31,20 +34,28 @@ function Book({ shouldOpen = false }) {
   const [isPreOpenShift, setIsPreOpenShift] = useState(false);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
   const [isBeltsHidden, setIsBeltsHidden] = useState(false);
+
+  // sections shown in the sidebar bookmarks. labels are now translated.
+  const sections = [
+    { label: t('bookmarks.characters'), page: 1, icon: <FaUser /> },
+    { label: t('bookmarks.mechanics'),  page: 3, icon: <FaCog /> },
+    { label: t('bookmarks.socialMedia'), page: 5, icon: <FaShareAlt /> },
+  ];
+
   const contentPages = [
     {
-      title: 'Title',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero suscipit porro, quidem sit, aperiam quasi nihil commodi possimus asperiores adipisci culpa rem mollitia ea ut consequatur, inventore velit a ex!',
+      title: t('pages.page1.title'),
+      text: t('pages.page1.text'),
     },
     {},
     {
-      title: 'Title',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero suscipit porro, quidem sit, aperiam quasi nihil commodi possimus asperiores adipisci culpa rem mollitia ea ut consequatur, inventore velit a ex!',
+      title: t('pages.page3.title'),
+      text: t('pages.page3.text'),
     },
     {},
     {
-      title: 'Title',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero suscipit porro, quidem sit, aperiam quasi nihil commodi possimus asperiores adipisci culpa rem mollitia ea ut consequatur, inventore velit a ex!',
+      title: t('pages.page5.title'),
+      text: t('pages.page5.text'),
     },
     {},
   ];
@@ -134,6 +145,14 @@ function Book({ shouldOpen = false }) {
     pageFlip.flipNext();
   };
 
+  // jump to a specific page via bookmark click
+  const handleBookmarkClick = (page) => {
+    const pageFlip = bookRef.current?.pageFlip();
+    if (pageFlip) {
+      pageFlip.flip(page);
+    }
+  };
+
   const handleOpenButtonClick = () => {
     if (currentPage !== 0 || isCoverUnlocking || isPreOpenShift) {
       return;
@@ -151,6 +170,22 @@ function Book({ shouldOpen = false }) {
   return (
     <div className={styles.bookContainer}>
       <div className={`${styles.wrap} ${isPreOpenShift ? styles.preOpenShift : ''}`}>
+        {/* bookmarks sidebar attached to the book */}
+        <div
+          className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}
+        >
+          {sections.map((sec) => (
+            <button
+              key={sec.label}
+              type="button"
+              className={`${styles.bookmark} ${currentPage === sec.page ? styles.activeBookmark : ''}`}
+              onClick={() => handleBookmarkClick(sec.page)}
+              aria-label={t('ariaLabels.goToPage', { section: sec.label })}
+            >
+              {sec.icon}
+            </button>
+          ))}
+        </div>
         <img className={styles.backgroundBook} src={background} alt="background_book" />
 
         <div className={styles.bookLayer}>
@@ -187,7 +222,7 @@ function Book({ shouldOpen = false }) {
                 type="button"
                 className={styles.coverButton}
                 onClick={handleOpenButtonClick}
-                aria-label="Open book">
+                aria-label={t('ariaLabels.openBook')}>
                 <img src={button} alt="Open book" className={styles.coverButtonImage} />
               </button>
             </Page>

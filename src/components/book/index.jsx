@@ -1,16 +1,16 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import HTMLFlipBook from 'react-pageflip';
 import styles from './styles.module.css';
 import { FaUser, FaCog, FaShareAlt } from 'react-icons/fa';
-import wingedHussar from '../../assets/images/Winged_Hussar.png';
-import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk.png';
-import Ottoman_Elite_Janissary from '../../assets/images/Ottoman_Elite_Janissary.png';
-import belts from '../../assets/images/belts.png';
-import background from '../../assets/images/background_book.png';
-import button from '../../assets/images/button_old.png';
-import cornerLeft from '../../assets/images/corner_left.png';
-import cornerRight from '../../assets/images/corner_right.png';
+import wingedHussar from '../../assets/images/Winged_Hussar_opt.webp';
+import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk_opt.webp';
+import Ottoman_Elite_Janissary from '../../assets/images/Ottoman_Elite_Janissary_opt.webp';
+import belts from '../../assets/images/belts_opt.webp';
+import background from '../../assets/images/background_book_opt.webp';
+import button from '../../assets/images/button_old_opt.webp';
+import cornerLeft from '../../assets/images/corner_left_opt.webp';
+import cornerRight from '../../assets/images/corner_right_opt.webp';
 
 const sketches = [wingedHussar, cossackSerdyuk, Ottoman_Elite_Janissary];
 
@@ -38,7 +38,7 @@ function Book({ shouldOpen = false }) {
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
     { label: t('bookmarks.characters'), page: 1, icon: <FaUser /> },
-    { label: t('bookmarks.mechanics'),  page: 3, icon: <FaCog /> },
+    { label: t('bookmarks.mechanics'), page: 3, icon: <FaCog /> },
     { label: t('bookmarks.socialMedia'), page: 5, icon: <FaShareAlt /> },
   ];
 
@@ -61,27 +61,30 @@ function Book({ shouldOpen = false }) {
   ];
   const totalPages = contentPages.length + 1;
 
-  const runOpenSequence = (pageFlip) => {
-    if (!pageFlip || isCoverUnlocking) {
-      return;
-    }
+  const runOpenSequence = useCallback(
+    (pageFlip) => {
+      if (!pageFlip || isCoverUnlocking) {
+        return;
+      }
 
-    setIsCoverUnlocking(true);
-    setIsBeltsHidden(false);
+      setIsCoverUnlocking(true);
+      setIsBeltsHidden(false);
 
-    beltsHideTimeoutRef.current = window.setTimeout(() => {
-      setIsBeltsHidden(true);
-    }, 420);
+      beltsHideTimeoutRef.current = window.setTimeout(() => {
+        setIsBeltsHidden(true);
+      }, 420);
 
-    preOpenShiftTimeoutRef.current = window.setTimeout(() => {
-      setIsPreOpenShift(true);
-    }, 430);
+      preOpenShiftTimeoutRef.current = window.setTimeout(() => {
+        setIsPreOpenShift(true);
+      }, 430);
 
-    unlockTimeoutRef.current = window.setTimeout(() => {
-      pageFlip.flipNext();
-      setIsCoverUnlocking(false);
-    }, 900);
-  };
+      unlockTimeoutRef.current = window.setTimeout(() => {
+        pageFlip.flipNext();
+        setIsCoverUnlocking(false);
+      }, 900);
+    },
+    [isCoverUnlocking],
+  );
 
   // trigger auto-open if shouldOpen is true (only once)
   useEffect(() => {
@@ -95,7 +98,7 @@ function Book({ shouldOpen = false }) {
 
       return () => window.clearTimeout(delayedOpen);
     }
-  }, [shouldOpen]);
+  }, [runOpenSequence, shouldOpen]);
 
   // clean up timeouts
   useEffect(() => {
@@ -171,17 +174,14 @@ function Book({ shouldOpen = false }) {
     <div className={styles.bookContainer}>
       <div className={`${styles.wrap} ${isPreOpenShift ? styles.preOpenShift : ''}`}>
         {/* bookmarks sidebar attached to the book */}
-        <div
-          className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}
-        >
+        <div className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}>
           {sections.map((sec) => (
             <button
               key={sec.label}
               type="button"
               className={`${styles.bookmark} ${currentPage === sec.page ? styles.activeBookmark : ''}`}
               onClick={() => handleBookmarkClick(sec.page)}
-              aria-label={t('ariaLabels.goToPage', { section: sec.label })}
-            >
+              aria-label={t('ariaLabels.goToPage', { section: sec.label })}>
               {sec.icon}
             </button>
           ))}

@@ -141,7 +141,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 16px;
-  background-image: url('../../assets/images/page2.png');
+  background-image: url('../../assets/images/page2_opt.webp');
   background-repeat: no-repeat;
   background-size: 110% 640px;
   background-position: center;
@@ -219,7 +219,7 @@
 .secondPage {
   padding: 0;
   overflow: hidden;
-  background-image: url('../../assets/images/page3.png');
+  background-image: url('../../assets/images/page3_opt.webp');
   background-repeat: no-repeat;
   background-size: 98% 510px;
   background-position: center;
@@ -241,7 +241,7 @@
   height: 100%;
   padding: 0;
   gap: 0;
-  background-image: url('../../assets/images/book.png');
+  background-image: url('../../assets/images/book_opt.webp');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 0 0;

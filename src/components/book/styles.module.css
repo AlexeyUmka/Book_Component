@@ -92,7 +92,8 @@
   position: relative;
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,6 +112,7 @@
 
 .flipBook {
   box-shadow: none;
+  pointer-events: auto;
 }
 
 .flipBook :global(.stf__wrapper),
@@ -312,15 +314,13 @@
      vertically centre it.  the offset variable lets you tweak the
      horizontal position inwards or outwards relative to the page. */
   position: absolute;
-  top: 50%;
-  right: 308px; /* nudges tabs left from the wrapper edge onto the page */
-  --bookmark-offset: 0px; /* add positive to push further right */
-  transform: translate(calc(var(--bookmark-offset)), -50%);
+  top: 0;
+  bottom: 0;
+  right: 200px; /* nudges tabs left from the wrapper edge onto the page */
   display: flex;
-  flex-direction: row;
-  gap: 12px;
-  z-index: 2;
-  rotate: 90deg;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 300ms ease;
@@ -339,51 +339,39 @@
 
 .bookmark {
   position: relative;
-  width: 44px;
-  height: 62px;
+  width: auto;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* warmer parchment with subtle grain for a paper look */
-  background: #d8b69f;
-  background-image: radial-gradient(circle at 20% 20%, rgba(0,0,0,0.02) 1px, transparent 2px),
-                    radial-gradient(circle at 80% 80%, rgba(0,0,0,0.02) 1px, transparent 2px);
-  background-size: 8px 8px;
-  color: #3a1f0b;
-  font-size: 20px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  line-height: 0;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #a47858;
-  border-radius: 4px 4px 2px 2px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s;
-  transform-origin: bottom center;
-  /* allow per-tab rotation via variable */
-  --bookmark-rot: 0deg;
-  transform: rotate(var(--bookmark-rot));
-  z-index: 1; /* base stacking; sits above pages but below active */
+  transform-origin: center;
+  z-index: 1;
 }
 
-/* slight random rotation to make tabs feel hand-placed */
-.bookmarks button:nth-child(1) { --bookmark-rot: -2deg; }
-.bookmarks button:nth-child(2) { --bookmark-rot: 1.5deg; }
-.bookmarks button:nth-child(3) { --bookmark-rot: -1deg; }
+.bookmarkImage {
+  width: auto;
+  height: 70px;
+  display: block;
+}
 
 .bookmark:hover {
-  transform: rotate(var(--bookmark-rot)) scale(1.1);
+  transform: scale(1.05);
 }
 
 /* make inactive tabs look receded into background without changing stacking */
 .bookmark:not(.activeBookmark) {
   opacity: 0.5;
-  transform: translateY(4px) rotate(var(--bookmark-rot));
+  transform: translateY(4px);
 }
 
-
-
 .activeBookmark {
-  background: #8b5a2b;
-  color: #fff;
   z-index: 10; /* push active tab above everything */
 }
 

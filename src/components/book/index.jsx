@@ -2,7 +2,6 @@ import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import HTMLFlipBook from 'react-pageflip';
 import styles from './styles.module.css';
-import { FaUser, FaCog, FaShareAlt } from 'react-icons/fa';
 import wingedHussar from '../../assets/images/Winged_Hussar_opt.webp';
 import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk_opt.webp';
 import Ottoman_Elite_Janissary from '../../assets/images/Ottoman_Elite_Janissary_opt.webp';
@@ -11,6 +10,9 @@ import background from '../../assets/images/background_book_opt.webp';
 import button from '../../assets/images/button_old_opt.webp';
 import cornerLeft from '../../assets/images/corner_left_opt.webp';
 import cornerRight from '../../assets/images/corner_right_opt.webp';
+import bookMark1 from '../../assets/images/book_mark_1_opt.webp';
+import bookMark2 from '../../assets/images/book_mark_2_opt.webp';
+import bookMark3 from '../../assets/images/book_mark_3_opt.webp';
 
 const sketches = [wingedHussar, cossackSerdyuk, Ottoman_Elite_Janissary];
 
@@ -37,9 +39,9 @@ function Book({ shouldOpen = false }) {
 
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
-    { label: t('bookmarks.characters'), page: 1, icon: <FaUser /> },
-    { label: t('bookmarks.mechanics'), page: 3, icon: <FaCog /> },
-    { label: t('bookmarks.socialMedia'), page: 5, icon: <FaShareAlt /> },
+    { label: t('bookmarks.characters'), page: 1, image: bookMark1 },
+    { label: t('bookmarks.mechanics'), page: 3, image: bookMark2 },
+    { label: t('bookmarks.socialMedia'), page: 5, image: bookMark3 },
   ];
 
   const contentPages = [
@@ -182,7 +184,7 @@ function Book({ shouldOpen = false }) {
               className={`${styles.bookmark} ${currentPage === sec.page ? styles.activeBookmark : ''}`}
               onClick={() => handleBookmarkClick(sec.page)}
               aria-label={t('ariaLabels.goToPage', { section: sec.label })}>
-              {sec.icon}
+              <img src={sec.image} alt={sec.label} className={styles.bookmarkImage} />
             </button>
           ))}
         </div>

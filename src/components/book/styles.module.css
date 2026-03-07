@@ -186,12 +186,12 @@
 
 :global(body.lang-ua) .page p,
 :global(body.lang-ua) .bookmarkText {
-  font-size: 1.08rem;
+  font-size: 1.16rem;
 }
 
 :global(body.lang-en) .page p,
 :global(body.lang-en) .bookmarkText {
-  font-size: 1.16rem;
+  font-size: 20px;
 }
 
 .cornerLeft {

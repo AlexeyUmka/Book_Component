@@ -96,7 +96,7 @@ function Book({ shouldOpen = false }) {
       text: t('pages.page9.text'),
     },
     {
-      type: 'blank',
+      text: t('pages.page10.text'),
     },
     {
       type: 'text',

@@ -26,7 +26,7 @@ const Page = forwardRef(function Page({ children, onClick, className = '' }, ref
 });
 
 function Book({ shouldOpen = false }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const bookRef = useRef(null);
   const preOpenShiftTimeoutRef = useRef(null);
   const unlockTimeoutRef = useRef(null);
@@ -36,14 +36,18 @@ function Book({ shouldOpen = false }) {
   const [isPreOpenShift, setIsPreOpenShift] = useState(false);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
   const [isBeltsHidden, setIsBeltsHidden] = useState(false);
+  const isEnglish = i18n.resolvedLanguage?.startsWith('en');
+  const mediaPage = isEnglish ? 23 : 25;
+  const aboutProjectPage = isEnglish ? 25 : 27;
+  const aboutUsPage = isEnglish ? 27 : 29;
 
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
     { label: t('bookmarks.intro'), page: 1, image: bookMark1 },
     { label: t('bookmarks.fractions'), page: 7, image: bookMark2 },
-    { label: t('bookmarks.media'), page: 23, image: bookMark3 },
-    { label: t('bookmarks.aboutProject'), page: 25, image: bookMark4 },
-    { label: t('bookmarks.aboutUs'), page: 27, image: bookMark5 },
+    { label: t('bookmarks.media'), page: mediaPage, image: bookMark3 },
+    { label: t('bookmarks.aboutProject'), page: aboutProjectPage, image: bookMark4 },
+    { label: t('bookmarks.aboutUs'), page: aboutUsPage, image: bookMark5 },
   ];
 
   const bookMarksText = [
@@ -54,7 +58,7 @@ function Book({ shouldOpen = false }) {
     { title: t('bookmarks.aboutUs') },
   ];
 
-  const contentPages = [
+  const allContentPages = [
     {
       type: 'text',
       title: t('pages.page1.title'),
@@ -156,19 +160,19 @@ function Book({ shouldOpen = false }) {
     },
     {
       type: 'text',
-      title: t('pages.page23.title'),
+      text: t('pages.page23.text'),
     },
     {
-      type: 'video',
-      videoSrc: '/videos/page24.mp4',
-      videoType: 'video/mp4',
+      type: 'blank',
     },
     {
       type: 'text',
       title: t('pages.page25.title'),
     },
     {
-      type: 'blank',
+      type: 'video',
+      videoSrc: '/videos/page26.mp4',
+      videoType: 'video/mp4',
     },
     {
       type: 'text',
@@ -177,7 +181,25 @@ function Book({ shouldOpen = false }) {
     {
       type: 'blank',
     },
+    {
+      type: 'text',
+      title: t('pages.page29.title'),
+    },
+    {
+      type: 'blank',
+    },
   ];
+
+  const contentPages = allContentPages.filter((_, index) => {
+    if (!isEnglish) {
+      return true;
+    }
+
+    // в en не показывать страницы 23 и 24.
+    const pageNumber = index + 1;
+    return pageNumber !== 23 && pageNumber !== 24;
+  });
+
   const totalPages = contentPages.length + 1;
 
   const runOpenSequence = useCallback(
@@ -295,20 +317,11 @@ function Book({ shouldOpen = false }) {
         {/* bookmarks sidebar attached to the book */}
         <div className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}>
           {sections.map((sec, index) => {
-            let isActive = currentPage === sec.page;
+            const nextSectionPage = sections[index + 1]?.page;
+            const isActive = nextSectionPage
+              ? currentPage >= sec.page && currentPage < nextSectionPage
+              : currentPage >= sec.page;
             const bookmarkLabel = bookMarksText[index]?.title || sec.label;
-
-            if (index === 0) {
-              isActive = currentPage >= 1 && currentPage < 7;
-            } else if (index === 1) {
-              isActive = currentPage >= 7 && currentPage < 23;
-            } else if (index === 2) {
-              isActive = currentPage >= 23 && currentPage < 24;
-            } else if (index === 3) {
-              isActive = currentPage >= 25 && currentPage < 26;
-            } else if (index === 4) {
-              isActive = currentPage >= 27;
-            }
 
             return (
               <button

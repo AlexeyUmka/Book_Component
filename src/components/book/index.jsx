@@ -259,11 +259,7 @@ function Book({ shouldOpen = false }) {
   }, []);
 
   // событие нажатия на страницы
-  const handlePageClick = (event) => {
-    // размеры и позиция элемента
-    const rect = event.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const isLeftSideClick = event.clientX < centerX;
+  const handlePageClick = (isLeftPage) => {
     // ссылка на методы книги
     const pageFlip = bookRef.current?.pageFlip();
 
@@ -271,8 +267,7 @@ function Book({ shouldOpen = false }) {
       return;
     }
 
-    // если клик по левой стороне, перевернуть назад
-    if (isLeftSideClick) {
+    if (isLeftPage) {
       if (currentPage <= 0) {
         return;
       }
@@ -388,7 +383,7 @@ function Book({ shouldOpen = false }) {
               return (
                 <Page
                   key={`${page.type || 'page'}_${index}`}
-                  onClick={handlePageClick}
+                  onClick={() => handlePageClick(isLeftPage)}
                   className={`${isImagePage ? styles.imagePage : ''} ${isVideoPage ? styles.videoPage : ''} ${hasPage3Background ? styles.secondPage : ''} ${isBlankPage ? styles.blankPage : ''} ${isLastPage ? styles.lastPage : ''} ${isLeftPage ? styles.leftPage : styles.rightPage}`}>
                   {isImagePage ? (
                     <>

@@ -374,9 +374,6 @@
 
 /* bookmarks sidebar for quick navigation */
 .bookmarks {
-  /* place strip along the right edge of the right-hand page and
-     vertically centre it.  the offset variable lets you tweak the
-     horizontal position inwards or outwards relative to the page. */
   position: absolute;
   top: -50px;
   bottom: 0;

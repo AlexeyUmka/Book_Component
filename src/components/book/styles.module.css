@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'PRECIOSA';
-  src: url('../../assets/fonts/LATINO/Preciosa.ttf') format('truetype');
+  src: url('/assets/fonts/LATINO/Preciosa.ttf') format('truetype');
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'MONOMAKH_UA';
-  src: url('../../assets/fonts/LATINO/ofont.ru_Monomakh%20Unicode.ttf') format('truetype');
+  src: url('/assets/fonts/LATINO/ofont.ru_Monomakh%20Unicode.ttf') format('truetype');
   font-style: normal;
   font-weight: 400;
   font-display: swap;

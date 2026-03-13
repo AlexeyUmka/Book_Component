@@ -266,16 +266,18 @@
 
 .videoWrapper {
   position: relative;
+  top: 20%;
   z-index: 3;
-  height: 100%;
-  width: 100%;
+  height: fit-content;
+  width: fit-content;
   max-width: 360px;
-  margin: 0 auto;
-  transform: translateY(22%);
+  margin: 0;
+  transform: none;
 }
 
 .videoPlayer {
-  width: 100%;
+  width: 360px;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   display: block;
   border: 1px solid rgba(0, 0, 0, 0.22);

@@ -27,7 +27,7 @@ function App() {
       <LanguageSwitcher />
       <Particles />
       {!showBook && <Landing onEnter={() => setShowBook(true)} />}
-      {showBook && <Book key={i18n.language} shouldOpen={true} />}
+      {showBook && <Book key={i18n.language} />}
     </>
   );
 }

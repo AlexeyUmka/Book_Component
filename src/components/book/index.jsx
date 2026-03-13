@@ -25,17 +25,17 @@ const Page = forwardRef(function Page({ children, onClick, className = '' }, ref
   );
 });
 
-function Book({ shouldOpen = false }) {
+function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const { t, i18n } = useTranslation();
   const bookRef = useRef(null);
   const preOpenShiftTimeoutRef = useRef(null);
   const unlockTimeoutRef = useRef(null);
   const beltsHideTimeoutRef = useRef(null);
   const hasAutoOpenedRef = useRef(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isPreOpenShift, setIsPreOpenShift] = useState(false);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [isPreOpenShift, setIsPreOpenShift] = useState(initialPage > 0);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
-  const [isBeltsHidden, setIsBeltsHidden] = useState(false);
+  const [isBeltsHidden, setIsBeltsHidden] = useState(initialPage > 0);
   const isEnglish = i18n.resolvedLanguage?.startsWith('en');
   const mediaPage = isEnglish ? 23 : 25;
   const aboutProjectPage = isEnglish ? 25 : 27;
@@ -343,11 +343,13 @@ function Book({ shouldOpen = false }) {
             minHeight={470}
             maxHeight={920}
             showCover
+            startPage={initialPage}
             disableFlipByClick
             useMouseEvents={false}
             mobileScrollSupport={false}
             onFlip={(event) => {
               setCurrentPage(event.data);
+              onPageChange?.(event.data);
 
               if (event.data === 0) {
                 setIsBeltsHidden(false);

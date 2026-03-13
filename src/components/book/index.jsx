@@ -18,8 +18,18 @@ import bookMark5 from '../../assets/images/book_mark_5_opt.webp';
 
 // компонент страницы
 const Page = forwardRef(function Page({ children, onClick, className = '' }, ref) {
+  const handleClick = (event) => {
+    const selectedText = window.getSelection?.()?.toString().trim();
+
+    if (selectedText) {
+      return;
+    }
+
+    onClick?.(event);
+  };
+
   return (
-    <div ref={ref} className={`${styles.page} ${className}`} onClick={onClick}>
+    <div ref={ref} className={`${styles.page} ${className}`} onClick={handleClick}>
       {children}
     </div>
   );
@@ -36,18 +46,14 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const [isPreOpenShift, setIsPreOpenShift] = useState(initialPage > 0);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
   const [isBeltsHidden, setIsBeltsHidden] = useState(initialPage > 0);
-  const isEnglish = i18n.resolvedLanguage?.startsWith('en');
-  const mediaPage = isEnglish ? 23 : 25;
-  const aboutProjectPage = isEnglish ? 25 : 27;
-  const aboutUsPage = isEnglish ? 27 : 29;
 
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
     { label: t('bookmarks.intro'), page: 1, image: bookMark1 },
     { label: t('bookmarks.fractions'), page: 7, image: bookMark2 },
-    { label: t('bookmarks.media'), page: mediaPage, image: bookMark3 },
-    { label: t('bookmarks.aboutProject'), page: aboutProjectPage, image: bookMark4 },
-    { label: t('bookmarks.aboutUs'), page: aboutUsPage, image: bookMark5 },
+    { label: t('bookmarks.media'), page: 25, image: bookMark3 },
+    { label: t('bookmarks.aboutProject'), page: 27, image: bookMark4 },
+    { label: t('bookmarks.aboutUs'), page: 29, image: bookMark5 },
   ];
 
   const bookMarksText = [
@@ -190,15 +196,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
     },
   ];
 
-  const contentPages = allContentPages.filter((_, index) => {
-    if (!isEnglish) {
-      return true;
-    }
-
-    // в en не показывать страницы 23 и 24.
-    const pageNumber = index + 1;
-    return pageNumber !== 23 && pageNumber !== 24;
-  });
+  const contentPages = allContentPages;
 
   const totalPages = contentPages.length + 1;
 

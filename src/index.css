@@ -2,6 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
 
 html,
@@ -12,16 +23,6 @@ body,
   overflow: hidden;
 }
 
-/* global background evocative of 15th‑century Ukrainian Cossacks */
-/*
-  We now generate our own SVG pattern instead of relying on pre-existing
-  raster assets. The `cossack-bg.svg` file contains a subtle repeating
-  tryzub motif over a parchment‑colored base.
-
-  To tweak the look, edit the SVG directly or adjust the --bg-color variable
-  below. If you ever want to switch back to an image, you can still override
-  by setting `--bg-image` on :root above this rule.
-*/
 :root {
   /* dark shady background base color */
   --bg-color: #11121a;

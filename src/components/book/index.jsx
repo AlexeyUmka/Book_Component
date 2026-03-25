@@ -3,18 +3,18 @@ import { useTranslation } from 'react-i18next';
 import HTMLFlipBook from 'react-pageflip';
 import styles from './styles.module.css';
 import wingedHussar from '../../assets/images/Winged_Hussar_opt.webp';
-import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk_opt.webp';
+import cossackSerdyuk from '../../assets/images/Cossack_Serdyuk_fin1.png';
 import Ottoman_Elite_Janissary from '../../assets/images/Ottoman_Elite_Janissary_opt.webp';
 import belts from '../../assets/images/belts_opt.webp';
 import background from '../../assets/images/background_book_opt.webp';
 import button from '../../assets/images/button_old_opt.webp';
 import cornerLeft from '../../assets/images/corner_left_opt.webp';
 import cornerRight from '../../assets/images/corner_right_opt.webp';
-import bookMark1 from '../../assets/images/book_mark_1_opt.webp';
-import bookMark2 from '../../assets/images/book_mark_2_opt.webp';
-import bookMark3 from '../../assets/images/book_mark_3_opt.webp';
-import bookMark4 from '../../assets/images/book_mark_4_opt.webp';
-import bookMark5 from '../../assets/images/book_mark_5_opt.webp';
+import bookMark1 from '../../assets/images/T_Violet_Bookmark.png';
+import bookMark2 from '../../assets/images/T_Orange_Bookmark.png';
+import bookMark3 from '../../assets/images/T_Red_Bookmark.png';
+import bookMark4 from '../../assets/images/T_Green_Bookmark.png';
+import bookMark5 from '../../assets/images/T_Blue_Bookmark.png';
 
 // компонент страницы
 const Page = forwardRef(function Page({ children, onClick, className = '' }, ref) {
@@ -51,8 +51,8 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const sections = [
     { label: t('bookmarks.intro'), page: 1, image: bookMark1 },
     { label: t('bookmarks.fractions'), page: 7, image: bookMark2 },
-    { label: t('bookmarks.media'), page: 25, image: bookMark3 },
-    { label: t('bookmarks.aboutProject'), page: 27, image: bookMark4 },
+    { label: t('bookmarks.media'), page: 23, image: bookMark3 },
+    { label: t('bookmarks.aboutProject'), page: 25, image: bookMark4 },
     { label: t('bookmarks.aboutUs'), page: 29, image: bookMark5 },
   ];
 
@@ -136,15 +136,15 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
       text: t('pages.page15.text'),
     },
     {
-      type: 'blank',
+      type: 'text',
+      text: t('pages.page16.text'),
     },
     {
       type: 'text',
       text: t('pages.page17.text'),
     },
     {
-      type: 'text',
-      text: t('pages.page18.text'),
+      type: 'blank',
     },
     {
       type: 'text',
@@ -154,7 +154,8 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
       text: t('pages.page19.text'),
     },
     {
-      type: 'blank',
+      type: 'text',
+      text: t('pages.page20.text'),
     },
     {
       type: 'text',
@@ -165,28 +166,37 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
       text: t('pages.page22.text'),
     },
     {
-      type: 'text',
-      text: t('pages.page23.text'),
+      type: 'video',
+      title: t('pages.page23.title'),
+      videoSrc: 'https://www.youtube.com/embed/Z-0z04IOzhI',
+      videoTitle: 'YouTube video player',
     },
     {
-      type: 'blank',
+      type: 'text',
+      text: t('pages.page24.text'),
+      centerText: true,
     },
     {
       type: 'text',
       title: t('pages.page25.title'),
+      text: t('pages.page25.text'),
     },
     {
-      type: 'video',
-      videoSrc: '/videos/page26.mp4',
-      videoType: 'video/mp4',
+      type: 'text',
+      text: t('pages.page26.text'),
     },
     {
       type: 'text',
       title: t('pages.page27.title'),
+      text: t('pages.page27.text'),
     },
     {
-      type: 'blank',
+      type: 'text',
+      text: t('pages.page28.text'),
     },
+    // {
+    //   type: 'blank',
+    // },
     {
       type: 'text',
       title: t('pages.page29.title'),
@@ -290,7 +300,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
     }
   };
 
-  const handleOpenButtonClick = () => {
+  const handleCoverClick = () => {
     if (currentPage !== 0 || isCoverUnlocking || isPreOpenShift) {
       return;
     }
@@ -334,12 +344,8 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
         <div className={styles.bookLayer}>
           <HTMLFlipBook
             ref={bookRef}
-            width={440}
-            height={500}
-            minWidth={360}
-            maxWidth={740}
-            minHeight={470}
-            maxHeight={920}
+            width={590}
+            height={700}
             showCover
             startPage={initialPage}
             disableFlipByClick
@@ -357,24 +363,22 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
             className={styles.flipBook}>
             {/* обложка + ремни + кнопка */}
             <Page
+              onClick={handleCoverClick}
               className={`${styles.coverPage} ${isCoverUnlocking ? styles.coverUnlocking : ''}`}>
+              <button type="button" className={styles.coverButton}>
+                <img src={button} alt="Open book" className={styles.coverButtonImage} />
+              </button>
               <img
                 src={belts}
                 alt="Belts"
                 className={`${styles.coverBelts} ${isBeltsHidden ? styles.coverBeltsHidden : ''}`}
               />
-              <button
-                type="button"
-                className={styles.coverButton}
-                onClick={handleOpenButtonClick}
-                aria-label={t('ariaLabels.openBook')}>
-                <img src={button} alt="Open book" className={styles.coverButtonImage} />
-              </button>
             </Page>
 
             {contentPages.map((page, index) => {
               const isLeftPage = index % 2 === 0;
               const isImagePage = page.type === 'image';
+              const isCossackSerdyukPage = page.image === cossackSerdyuk;
               const isBlankPage = page.type === 'blank';
               const isVideoPage = page.type === 'video';
               const isLastPage = index === contentPages.length - 1;
@@ -395,7 +399,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
                       <img
                         src={page.image}
                         alt={page.imageAlt || 'Sketch'}
-                        className={styles.sketchImage}
+                        className={`${styles.sketchImage} ${isCossackSerdyukPage ? styles.cossackSerdyukImage : ''}`}
                       />
                     </>
                   ) : isVideoPage ? (
@@ -410,14 +414,14 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
                         onClick={(event) => event.stopPropagation()}
                         onPointerDown={(event) => event.stopPropagation()}>
                         {page.title ? <h2 className={styles.title}>{page.title}</h2> : null}
-                        <video
+                        <iframe
                           className={styles.videoPlayer}
-                          controls
-                          preload="metadata"
-                          playsInline>
-                          <source src={page.videoSrc} type={page.videoType || 'video/mp4'} />
-                          Your browser does not support the video tag.
-                        </video>
+                          src={page.videoSrc}
+                          title={page.videoTitle || 'Embedded video'}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        />
                       </div>
                     </>
                   ) : isBlankPage ? (
@@ -438,7 +442,12 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
                       {page.subtitle_2 ? (
                         <p className={styles.subtitle}>{page.subtitle_2}</p>
                       ) : null}
-                      {page.text ? <p className={styles.text}>{page.text}</p> : null}
+                      {page.text ? (
+                        <p
+                          className={`${styles.text} ${page.centerText ? styles.textCentered : ''}`}>
+                          {page.text}
+                        </p>
+                      ) : null}
                     </>
                   )}
                 </Page>

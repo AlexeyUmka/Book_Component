@@ -1,3 +1,150 @@
+@font-face {
+  font-family: 'PRECIOSA';
+  src: url('/assets/fonts/LATINO/Preciosa.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MONOMAKH_UA';
+  src: url('/assets/fonts/LATINO/ofont.ru_Monomakh%20Unicode.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Afromatic';
+  src: url('/assets/fonts/Afromatic.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* +- */
+@font-face {
+  font-family: 'Graduation';
+  src: url('/assets/fonts/Graduation.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* +- */
+@font-face {
+  font-family: 'Lost_and_Found';
+  src: url('/assets/fonts/Lost and Found.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* @font-face {
+  font-family: 'Sentaphira_Demo';
+  src: url('/assets/fonts/Sentaphira Demo.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+@font-face {
+  font-family: 'Vampires';
+  src: url('/assets/fonts/Vampires.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* @font-face {
+  font-family: 'Amatic_SC_400';
+  src: url('/assets/fonts/amatic-sc/AmaticSC-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Amatic_SC_700';
+  src: url('/assets/fonts/amatic-sc/AmaticSC-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Beauty_Wonderful';
+  src:
+    url('/assets/fonts/beauty-wonderful/Beauty Wonderful.woff') format('woff'),
+    url('/assets/fonts/beauty-wonderful/Beauty Wonderful.ttf') format('truetype'),
+    url('/assets/fonts/beauty-wonderful/Beauty Wonderful.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Delight_Calligraphy';
+  src:
+    url('/assets/fonts/delight-calligraphy/Delight Calligraphy.woff') format('woff'),
+    url('/assets/fonts/delight-calligraphy/Delight Calligraphy.ttf') format('truetype'),
+    url('/assets/fonts/delight-calligraphy/Delight Calligraphy.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* идет для укр */
+/* +- */
+@font-face {
+  font-family: 'Preciosa';
+  src: url('/assets/fonts/LATINO/Preciosa.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* @font-face {
+  font-family: 'Preciosa_Valeria';
+  src: url('/assets/fonts/LATINO/Preciosa Valeria.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Monomakh_Unicode';
+  src: url('/assets/fonts/LATINO/ofont.ru_Monomakh Unicode.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+/* ////////////// */
+
+/* @font-face {
+  font-family: 'Murbia_Demo';
+  src: url('/assets/fonts/murbia/Murbia DEMO.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Scribble_Script';
+  src: url('/assets/fonts/scribble-script/Scribble Script.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'Sketch_Gothic_School';
+  src: url('/assets/fonts/sketch-gothic-school/Sketch Gothic School.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+} */
+
 * {
   margin: 0;
   padding: 0;

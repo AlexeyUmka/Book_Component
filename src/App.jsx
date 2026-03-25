@@ -11,10 +11,6 @@ function App() {
   const [showBook, setShowBook] = useState(false);
   const [bookPage, setBookPage] = useState(0);
 
-  const getInitialPageForLanguage = (page) => {
-    return page;
-  };
-
   useEffect(() => {
     const lang = i18n.language === 'ua' ? 'ua' : 'en';
     document.documentElement.lang = lang;
@@ -32,13 +28,7 @@ function App() {
       <LanguageSwitcher />
       <Particles />
       {!showBook && <Landing onEnter={() => setShowBook(true)} />}
-      {showBook && (
-        <Book
-          key={i18n.language}
-          initialPage={getInitialPageForLanguage(bookPage)}
-          onPageChange={setBookPage}
-        />
-      )}
+      {showBook && <Book key={i18n.language} initialPage={bookPage} onPageChange={setBookPage} />}
     </>
   );
 }

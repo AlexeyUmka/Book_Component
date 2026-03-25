@@ -13,20 +13,18 @@ function LanguageSwitcher() {
 
   return (
     <div className={styles.switcher}>
-      <button
+      <div
         className={`${styles.button} ${i18n.language === 'en' ? styles.active : ''}`}
         onClick={() => handleLanguageChange('en')}
-        aria-label="Switch to English"
-      >
+        aria-label="Switch to English">
         <img src={enIcon} alt="English" className={styles.flagIcon} />
-      </button>
-      <button
+      </div>
+      <div
         className={`${styles.button} ${i18n.language === 'ua' ? styles.active : ''}`}
         onClick={() => handleLanguageChange('ua')}
-        aria-label="Switch to Ukrainian"
-      >
+        aria-label="Switch to Ukrainian">
         <img src={ukIcon} alt="Ukrainian" className={styles.flagIcon} />
-      </button>
+      </div>
     </div>
   );
 }

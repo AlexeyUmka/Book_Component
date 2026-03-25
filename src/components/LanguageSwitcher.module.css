@@ -8,32 +8,22 @@
 }
 
 .button {
-  padding: 10px 14px;
-  background: #8b5a2b;
-  color: #2b1b0e;
-  border: 1px solid #a47858;
-  border-radius: 4px;
-  font-size: 28px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  line-height: 1;
-  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-}
-
-.button:hover {
-  background: #c69c6d;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.button.active {
-  background: #d8b69f;
-  color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 .flagIcon {
-  width: 28px;
-  height: 28px;
+  width: 50px;
+  height: 50px;
   display: block;
   object-fit: contain;
+  filter: brightness(1);
+  transition: filter 0.2s ease;
+}
+
+.button:not(.active) .flagIcon {
+  filter: brightness(0.6);
+}
+
+.button:hover .flagIcon {
+  filter: brightness(0.9);
 }

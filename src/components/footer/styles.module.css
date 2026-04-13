@@ -1,0 +1,76 @@
+.mainContainer {
+  background: rgba(5, 6, 8, 0.6);
+  padding: 20px 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.links {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 81%;
+  font-weight: 400;
+  margin-bottom: 1.6rem;
+}
+
+.socialMedia {
+  display: flex;
+  align-items: center;
+}
+
+.socialMedia a,
+.socialMedia a:visited,
+.socialMedia a:hover,
+.socialMedia a:active {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.socialMedia i {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.contacts {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  color: #ffffff7d;
+  font-size: 1rem;
+  line-height: 81%;
+  font-weight: 400;
+  margin-bottom: 2.4rem;
+}
+
+.contactWithUs {
+  width: 80%;
+  margin: 0 auto;
+  color: #ffffff7d;
+  font-size: 0.8rem;
+  line-height: 81%;
+  font-weight: 400;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contactWithUs input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #ffffff7d;
+  padding: 15px;
+  color: #ffffff7d;
+  font-size: 20px;
+  line-height: 81%;
+  font-weight: 400;
+}
+
+.contactWithUs input:focus {
+  outline: none;
+}

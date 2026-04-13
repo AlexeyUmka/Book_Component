@@ -40,13 +40,13 @@
   font-display: swap;
 }
 
-/* @font-face {
+@font-face {
   font-family: 'Sentaphira_Demo';
   src: url('/assets/fonts/Sentaphira Demo.otf') format('opentype');
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-} */
+}
 
 @font-face {
   font-family: 'Vampires';
@@ -144,74 +144,3 @@
   font-weight: 400;
   font-display: swap;
 } */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-}
-
-img {
-  -webkit-user-drag: none;
-  user-drag: none;
-  pointer-events: none;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-:root {
-  /* dark shady background base color */
-  --bg-color: #11121a;
-  /* optional image is no longer used, but variable kept for future overrides */
-  --bg-image: none;
-}
-
-body {
-  background: var(--bg-color);
-}
-
-/* floating particle animation copied from riversband-website */
-@keyframes float-particle {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-100px) translateX(30px) scale(1.5);
-  }
-}
-
-.particles-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  /* keep the flying gold dots behind the rest of the UI; app's Book component renders later in the DOM,
-     so it will paint on top even with z-index:0. Avoid negative z-index so they aren't hidden behind body. */
-  z-index: 0;
-}
-
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  /* actual color is assigned inline via style attribute (blue or yellow) */
-  background: transparent;
-}

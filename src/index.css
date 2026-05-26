@@ -15,6 +15,14 @@
 }
 
 @font-face {
+  font-family: 'Monomakh_Unicode';
+  src: url('/assets/fonts/LATINO/ofont.ru_Monomakh%20Unicode.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Afromatic';
   src: url('/assets/fonts/Afromatic.ttf') format('truetype');
   font-style: normal;

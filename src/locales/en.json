@@ -2,7 +2,8 @@
   "landing": {
     "game-name": "Riversband",
     "tagline": "Something incredible is coming...",
-    "button-text": "Learn About The Game"
+    "button-text": "Learn About The Game",
+    "back-button": "Back"
   },
   "bookmarks": {
     "intro": " PREFACE",

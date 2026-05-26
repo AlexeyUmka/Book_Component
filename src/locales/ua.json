@@ -2,7 +2,8 @@
   "landing": {
     "game-name": "Riversband",
     "tagline": "Щось неймовірне вже на підході...",
-    "button-text": "Дізнатися більше про гру"
+    "button-text": "Дізнатися більше про гру",
+    "back-button": "Назад"
   },
   "bookmarks": {
     "intro": "ВСТУП",

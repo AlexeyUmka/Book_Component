@@ -40,7 +40,12 @@ function App() {
         </div>
       )}
       {showBook && (
-        <Book key={i18n.language} initialPage={bookPage} onPageChange={setBookPage} />
+        <>
+          <button className="backButton" onClick={() => setShowBook(false)}>
+            ← {t('landing.back-button')}
+          </button>
+          <Book key={i18n.language} initialPage={bookPage} onPageChange={setBookPage} />
+        </>
       )}
     </>
   );

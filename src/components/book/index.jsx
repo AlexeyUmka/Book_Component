@@ -35,6 +35,13 @@ const Page = forwardRef(function Page({ children, onClick, className = '' }, ref
   );
 });
 
+const DESIGN_WIDTH = 1440;
+const DESIGN_HEIGHT = 900;
+
+function getScale() {
+  return Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
+}
+
 function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const { t, i18n } = useTranslation();
   const bookRef = useRef(null);
@@ -46,6 +53,13 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const [isPreOpenShift, setIsPreOpenShift] = useState(initialPage > 0);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
   const [isBeltsHidden, setIsBeltsHidden] = useState(initialPage > 0);
+  const [scale, setScale] = useState(getScale);
+
+  useEffect(() => {
+    const onResize = () => setScale(getScale());
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
@@ -315,7 +329,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   };
 
   return (
-    <div className={styles.bookContainer}>
+    <div className={styles.bookContainer} style={{ transform: `scale(${scale})` }}>
       <div className={`${styles.wrap} ${isPreOpenShift ? styles.preOpenShift : ''}`}>
         {/* bookmarks sidebar attached to the book */}
         <div className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}>

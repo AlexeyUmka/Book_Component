@@ -125,10 +125,6 @@
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.08)) !important;
 }
 
-.flipBook :global(.stf__item.--right) {
-  margin-left: -25px;
-}
-
 .page {
   position: relative;
   width: 100%;
@@ -480,11 +476,7 @@
   display: none;
 }
 
-@media (max-width: 640px) {
-  .bookmarks {
-    display: none;
-  }
-}
+/* bookmarks hidden on mobile via the unified 767px block below */
 
 .title {
   position: relative;
@@ -518,4 +510,149 @@
 
 .textCentered {
   top: 35%;
+}
+
+@media (max-width: 767px) {
+  /* dark fill behind the single page */
+  .bookContainer {
+    background: #11121a;
+  }
+
+  /* absolute centering: avoids flexbox safe-center overflow bug where
+     a child wider than the container is placed at left:0 instead of truly centred */
+  .wrap {
+    position: absolute;
+    left: calc(50% - 295px);
+    top: calc(50% - 350px);
+    width: 590px;
+    height: 700px;
+  }
+
+  /* clip the phantom second-page slot that react-pageflip allocates
+     even in portrait mode — this fixes the gap on the right and
+     prevents the invisible right-side area from eating pointer events */
+  .bookLayer {
+    overflow: hidden;
+  }
+  .flipBook :global(.stf__wrapper),
+  .flipBook :global(.stf__block) {
+    overflow: hidden;
+  }
+
+  /* hide desktop-only corner decorations */
+  .cornerLeft,
+  .cornerRight {
+    display: none;
+  }
+
+  /* bookmarks: horizontal row centred below the page */
+  .bookmarks {
+    flex-direction: row;
+    top: auto;
+    bottom: -52px;
+    right: auto;
+    left: 0;
+    width: 590px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+  .bookmarkImage {
+    width: 70px;
+    height: 24px;
+  }
+  .bookmarkText {
+    display: block;
+    font-size: 7px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    letter-spacing: 0;
+    opacity: 0.9;
+  }
+  /* override any nth-child left-offset rules */
+  .bookmarks .bookmark:nth-child(n) .bookmarkText {
+    left: 50%;
+  }
+  .bookmark:not(.activeBookmark) {
+    transform: none;
+  }
+
+  .videoWrapper {
+    right: 0;
+  }
+
+  /* transparent left/right tap zones that sit above the flipbook (z-index > bookLayer:2) */
+  .mobileNavOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    pointer-events: none;
+  }
+
+  .mobileNavPrev,
+  .mobileNavNext {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+
+  /* parchment colour fallback */
+  .page {
+    background-image: none;
+    background-color: #f0e6ce;
+    padding: 2rem 2.5rem;
+  }
+  .secondPage {
+    background-image: none;
+    background-color: #e8dcc5;
+  }
+
+  /* reset desktop translateY offsets */
+  .title {
+    font-size: 22px;
+    transform: none;
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    transform: none;
+    font-size: 0.9rem;
+  }
+  .text {
+    transform: none;
+  }
+
+  /* font sizes */
+  :global(body.lang-ua) .page p {
+    font-size: 1.2rem;
+  }
+  :global(body.lang-en) .page p {
+    font-size: 1.05rem;
+  }
+
+  /* show BOTH nav arrows on every page in portrait mode */
+  .page::before {
+    content: '‹';
+    bottom: 12px;
+    left: 16px;
+  }
+  .page::after {
+    content: '›';
+    bottom: 12px;
+    right: 16px;
+  }
+  .lastPage::after {
+    display: none;
+  }
+  .blankPage::before,
+  .blankPage::after {
+    display: none;
+  }
 }

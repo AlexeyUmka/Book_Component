@@ -3,7 +3,7 @@ import styles from './LanguageSwitcher.module.css';
 import enIcon from '../assets/icons/en.png';
 import ukIcon from '../assets/icons/uk.png';
 
-function LanguageSwitcher() {
+function LanguageSwitcher({ scale = 1 }) {
   const { i18n } = useTranslation();
 
   const handleLanguageChange = (lng) => {
@@ -12,7 +12,9 @@ function LanguageSwitcher() {
   };
 
   return (
-    <div className={styles.switcher}>
+    <div
+      className={styles.switcher}
+      style={{ transform: `scale(${scale})`, transformOrigin: 'top right' }}>
       <div
         className={`${styles.button} ${i18n.language === 'en' ? styles.active : ''}`}
         onClick={() => handleLanguageChange('en')}

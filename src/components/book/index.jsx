@@ -18,31 +18,35 @@ import bookMark5 from '../../assets/images/T_Blue_Bookmark.png';
 
 // компонент страницы
 const Page = forwardRef(function Page({ children, onClick, className = '' }, ref) {
+  const touchFiredRef = useRef(false);
+
+  const dispatchNav = (clientX) => {
+    if (window.getSelection?.()?.toString().trim()) return;
+    onClick?.({ clientX });
+  };
+
+  const handleTouchEnd = (event) => {
+    touchFiredRef.current = true;
+    const touch = event.changedTouches?.[0];
+    if (touch) dispatchNav(touch.clientX);
+    // suppress the ghost click the browser fires ~300 ms after touchend
+    setTimeout(() => { touchFiredRef.current = false; }, 400);
+  };
+
   const handleClick = (event) => {
-    const selectedText = window.getSelection?.()?.toString().trim();
-
-    if (selectedText) {
-      return;
-    }
-
+    if (touchFiredRef.current) return;
+    if (window.getSelection?.()?.toString().trim()) return;
     onClick?.(event);
   };
 
   return (
-    <div ref={ref} className={`${styles.page} ${className}`} onClick={handleClick}>
+    <div ref={ref} className={`${styles.page} ${className}`} onClick={handleClick} onTouchEnd={handleTouchEnd}>
       {children}
     </div>
   );
 });
 
-const DESIGN_WIDTH = 1440;
-const DESIGN_HEIGHT = 900;
-
-function getScale() {
-  return Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
-}
-
-function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
+function Book({ shouldOpen = false, scale = 1, isMobile = false, initialPage = 0, onPageChange }) {
   const { t, i18n } = useTranslation();
   const bookRef = useRef(null);
   const preOpenShiftTimeoutRef = useRef(null);
@@ -53,13 +57,6 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   const [isPreOpenShift, setIsPreOpenShift] = useState(initialPage > 0);
   const [isCoverUnlocking, setIsCoverUnlocking] = useState(false);
   const [isBeltsHidden, setIsBeltsHidden] = useState(initialPage > 0);
-  const [scale, setScale] = useState(getScale);
-
-  useEffect(() => {
-    const onResize = () => setScale(getScale());
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
 
   // sections shown in the sidebar bookmarks. labels are now translated.
   const sections = [
@@ -238,7 +235,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
       }, 420);
 
       preOpenShiftTimeoutRef.current = window.setTimeout(() => {
-        setIsPreOpenShift(true);
+        if (!isMobile) setIsPreOpenShift(true);
       }, 430);
 
       unlockTimeoutRef.current = window.setTimeout(() => {
@@ -246,7 +243,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
         setIsCoverUnlocking(false);
       }, 900);
     },
-    [isCoverUnlocking],
+    [isCoverUnlocking, isMobile],
   );
 
   // trigger auto-open if shouldOpen is true (only once)
@@ -281,11 +278,21 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   }, []);
 
   // событие нажатия на страницы
-  const handlePageClick = (isLeftPage) => {
-    // ссылка на методы книги
+  const handlePageClick = (event, isLeftPage) => {
     const pageFlip = bookRef.current?.pageFlip();
 
     if (!pageFlip) {
+      return;
+    }
+
+    if (isMobile) {
+      // left half = go back, right half = go forward
+      // no currentPage guard — react-pageflip is a no-op at the boundary pages
+      if (event.clientX < window.innerWidth / 2) {
+        pageFlip.flipPrev();
+      } else {
+        pageFlip.flipNext();
+      }
       return;
     }
 
@@ -329,8 +336,10 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
   };
 
   return (
-    <div className={styles.bookContainer} style={{ transform: `scale(${scale})` }}>
-      <div className={`${styles.wrap} ${isPreOpenShift ? styles.preOpenShift : ''}`}>
+    <div className={styles.bookContainer} style={!isMobile ? { transform: `scale(${scale})` } : undefined}>
+      <div
+        className={`${styles.wrap} ${isPreOpenShift && !isMobile ? styles.preOpenShift : ''}`}
+        style={isMobile ? { transform: `scale(${scale})` } : undefined}>
         {/* bookmarks sidebar attached to the book */}
         <div className={`${styles.bookmarks} ${currentPage > 0 ? styles.bookmarksOpen : ''}`}>
           {sections.map((sec, index) => {
@@ -346,6 +355,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
                 type="button"
                 className={`${styles.bookmark} ${isActive ? styles.activeBookmark : ''}`}
                 onClick={() => handleBookmarkClick(sec.page)}
+                onTouchEnd={(e) => { e.preventDefault(); handleBookmarkClick(sec.page); }}
                 aria-label={t('ariaLabels.goToPage', { section: sec.label })}>
                 <img src={sec.image} alt={sec.label} className={styles.bookmarkImage} />
                 <span className={styles.bookmarkText}>{bookmarkLabel}</span>
@@ -353,7 +363,28 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
             );
           })}
         </div>
-        <img className={styles.backgroundBook} src={background} alt="background_book" />
+        {!isMobile && <img className={styles.backgroundBook} src={background} alt="background_book" />}
+
+        {/* transparent left/right tap targets – outside the flipbook DOM so
+            react-pageflip's touch handlers never intercept them */}
+        {isMobile && (isBeltsHidden || currentPage > 0) && (
+          <div className={styles.mobileNavOverlay}>
+            <button
+              type="button"
+              className={styles.mobileNavPrev}
+              onTouchEnd={(e) => { e.preventDefault(); bookRef.current?.pageFlip()?.flipPrev(); }}
+              onClick={() => bookRef.current?.pageFlip()?.flipPrev()}
+              aria-label="Previous page"
+            />
+            <button
+              type="button"
+              className={styles.mobileNavNext}
+              onTouchEnd={(e) => { e.preventDefault(); bookRef.current?.pageFlip()?.flipNext(); }}
+              onClick={() => bookRef.current?.pageFlip()?.flipNext()}
+              aria-label="Next page"
+            />
+          </div>
+        )}
 
         <div className={styles.bookLayer}>
           <HTMLFlipBook
@@ -365,6 +396,8 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
             disableFlipByClick
             useMouseEvents={false}
             mobileScrollSupport={false}
+            usePortrait={isMobile}
+            mobileScrollSupport={isMobile}
             onFlip={(event) => {
               setCurrentPage(event.data);
               onPageChange?.(event.data);
@@ -401,7 +434,7 @@ function Book({ shouldOpen = false, initialPage = 0, onPageChange }) {
               return (
                 <Page
                   key={`${page.type || 'page'}_${index}`}
-                  onClick={() => handlePageClick(isLeftPage)}
+                  onClick={(event) => handlePageClick(event, isLeftPage)}
                   className={`${isImagePage ? styles.imagePage : ''} ${isVideoPage ? styles.videoPage : ''} ${hasPage3Background ? styles.secondPage : ''} ${isBlankPage ? styles.blankPage : ''} ${isLastPage ? styles.lastPage : ''} ${isLeftPage ? styles.leftPage : styles.rightPage}`}>
                   {isImagePage ? (
                     <>

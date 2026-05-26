@@ -6,10 +6,28 @@ import Footer from './components/footer';
 import Book from './components/book';
 import LanguageSwitcher from './components/LanguageSwitcher';
 
+const DESIGN_WIDTH = 1440;
+const DESIGN_HEIGHT = 900;
+const MOBILE_PAGE_WIDTH = 590;
+const MOBILE_PAGE_HEIGHT = 700;
+
+function isMobileViewport() {
+  return window.innerWidth < 768;
+}
+
+function getBookScale() {
+  if (isMobileViewport()) {
+    return Math.min(window.innerWidth / MOBILE_PAGE_WIDTH, window.innerHeight / MOBILE_PAGE_HEIGHT);
+  }
+  return Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
+}
+
 function App() {
   const { i18n, t } = useTranslation();
   const [showBook, setShowBook] = useState(false);
   const [bookPage, setBookPage] = useState(0);
+  const [scale, setScale] = useState(getBookScale);
+  const [isMobile, setIsMobile] = useState(isMobileViewport);
 
   useEffect(() => {
     const lang = i18n.language === 'ua' ? 'ua' : 'en';
@@ -23,9 +41,18 @@ function App() {
     };
   }, [i18n.language]);
 
+  useEffect(() => {
+    const onResize = () => {
+      setScale(getBookScale());
+      setIsMobile(isMobileViewport());
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   return (
     <>
-      <LanguageSwitcher />
+      <LanguageSwitcher scale={showBook ? scale : 1} />
       <Particles />
       {!showBook && (
         <div className="mainContainer">
@@ -41,10 +68,19 @@ function App() {
       )}
       {showBook && (
         <>
-          <button className="backButton" onClick={() => setShowBook(false)}>
+          <button
+            className="backButton"
+            style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}
+            onClick={() => setShowBook(false)}>
             ← {t('landing.back-button')}
           </button>
-          <Book key={i18n.language} initialPage={bookPage} onPageChange={setBookPage} />
+          <Book
+            key={`${i18n.language}-${isMobile}`}
+            scale={scale}
+            isMobile={isMobile}
+            initialPage={bookPage}
+            onPageChange={setBookPage}
+          />
         </>
       )}
     </>
